@@ -53,11 +53,6 @@ public class ListGraph implements Graph{
             }
         }
         System.out.println("Printing Edges");
-        for(List<Edge> edgeList: adjList){
-            for(Edge edge : edgeList){
-                System.out.printf("Edge Source: %d Edge Destination: %d Edge Weight (Energy): %f \n", edge.getSource(), edge.getDestination(), edge.getEnergy());
-            }
-        }
         return components;
     }
 
