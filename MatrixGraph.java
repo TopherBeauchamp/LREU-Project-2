@@ -7,19 +7,19 @@ import java.util.Stack;
 //Adjacency matrix class from https://www.programiz.com/dsa/graph-adjacency-matrix (BFS and DFS algorithms are my own)
 
 public class MatrixGraph implements Graph {
-    private boolean adjMatrix[][];
+    private Edge adjMatrix[][];
     private int numVertices;
   
     // Initialize the matrix
     MatrixGraph(int numVertices) {
       this.numVertices = numVertices;
-      adjMatrix = new boolean[numVertices][numVertices];
+      adjMatrix = new Edge[numVertices][numVertices];
     }
   
     // Add edges - subtract 1 from indexes to convert from 1 - numVertices based nodeList to 0 - numVertices -1 based adjMatrix 
-    public void addEdge(int i, int j) {
-      adjMatrix[i-1][j-1] = true;
-      adjMatrix[j-1][i-1] = true;
+    public void addEdge(Node sourceNode, Node connectedNode) {
+      adjMatrix[sourceNode.getId()-1][connectedNode.getId()-1] = new Edge(sourceNode.getId(), connectedNode.getId(), sourceNode.getPackets(), sourceNode.getDistance(connectedNode)) ;
+      adjMatrix[connectedNode.getId()-1][sourceNode.getId()-1] = new Edge(connectedNode.getId(), sourceNode.getId(), connectedNode.getPackets(), connectedNode.getDistance(sourceNode));
     }
   
 
@@ -43,7 +43,7 @@ public class MatrixGraph implements Graph {
 
             //Search all other nodes besides currentNode to see if there is an edge in the adjMatrix, if so, add to queue 
             for(int neighbor =0; neighbor < numVertices; neighbor++){ 
-              if(adjMatrix[currentNode][neighbor] && !visited[neighbor]){
+              if(adjMatrix[currentNode][neighbor] != null && !visited[neighbor]){
                   queue.offer(neighbor); 
                   visited[neighbor] = true; 
               }
@@ -74,7 +74,7 @@ public class MatrixGraph implements Graph {
             component.add(NodeRegistry.getNodeById(currentNode +1));
 
             for(int neighbor = 0; neighbor < numVertices; neighbor++){
-              if(adjMatrix[currentNode][neighbor] && !visited[neighbor]){
+              if(adjMatrix[currentNode][neighbor] != null&& !visited[neighbor]){
                 stack.push(neighbor);
                 visited[neighbor] = true; 
               }

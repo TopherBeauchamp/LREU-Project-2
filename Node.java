@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Random;
 
 public class Node {
@@ -46,6 +47,16 @@ public class Node {
     public boolean checkIfRendezvous(){
         return isRendezvous;
     }
+
+public static void designate(List<Node> component){
+    if(component.size() == 1){
+        component.get(0).designateNode(); 
+    }
+    else{ 
+        int designatedIndex = rand.nextInt(component.size()); 
+        component.get(designatedIndex).designateNode();
+    }
+}
 
     @Override
     public String toString() {
