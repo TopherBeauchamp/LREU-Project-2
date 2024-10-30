@@ -8,7 +8,7 @@ public class NodeRegistry {
         map.put(node.getId(), node);
     }
 
-    public Node getNodeById(int id){ 
+    public static Node getNodeById(int id){ 
         return map.get(id);
     }
 }

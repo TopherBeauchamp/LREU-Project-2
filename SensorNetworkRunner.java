@@ -6,7 +6,7 @@ public class SensorNetworkRunner {
     
     public static void main(String[] args){ 
         Scanner scan = new Scanner(System.in);
-        int numNodes, width, length, transmissionRange,  graphChoice, algoChoice; 
+        int numNodes, width, length, transmissionRange,  graphChoice, algoChoice, minPackets, maxPackets; 
 
         //Getting user input 
         System.out.println("Please enter width of sensor network:");
@@ -21,6 +21,10 @@ public class SensorNetworkRunner {
         graphChoice = scan.nextInt();
         System.out.println("Type 1 for breadth first search or 2 for depth first search. You can also Type 3 for both:");
         algoChoice = scan.nextInt();
+        System.out.println("Please enter maximum number of data packets per node:");
+        maxPackets = scan.nextInt();
+        System.out.println("Please enter minimum number of data packets per node:");
+        minPackets= scan.nextInt();
 
         scan.close(); 
 
@@ -40,7 +44,7 @@ public class SensorNetworkRunner {
         //Initializing nodes 
         List<Node> nodeList = new ArrayList<Node>(numNodes);
         for(int i = 1; i <= numNodes; i++){ 
-            Node newNode = new Node(i, width, length);
+            Node newNode = new Node(i, width, length, minPackets, maxPackets);
             nodeList.add(newNode);
             NodeRegistry.registerNode(newNode);
         }
@@ -49,20 +53,20 @@ public class SensorNetworkRunner {
         for (int i = 0; i < numNodes; i++) {
             for (int j = i + 1; j < numNodes; j++) {
                 if (nodeList.get(i).getDistance(nodeList.get(j)) <= transmissionRange) {
-                    graph.addEdge(i+1, j+1);
+                    graph.addEdge(nodeList.get(i).getId(), j+1);
                 }
             }
         }
 
-        List<List<Integer>> components = null;
-        List<List<Integer>> components2 = null; 
+        List<List<Node>> components = null;
+        List<List<Node>> components2 = null; 
         if(algoChoice == 1){
            components = graph.bfs(); 
         }
-        if(algoChoice == 2){
+        else if(algoChoice == 2){
             components = graph.dfs(); 
         }
-        if(algoChoice == 3){
+        else if(algoChoice == 3){
             components = graph.bfs();
             components2 = graph.dfs(); 
         }
@@ -71,7 +75,15 @@ public class SensorNetworkRunner {
             System.exit(0);
         }
 
-       
+       for(List<Node> component : components){
+        DesignateRendezvous.designate(component);
+       }
+
+       if(algoChoice == 3){
+        for(List<Node> component : components2){
+            DesignateRendezvous.designate(component);
+           }
+       }
 
         if(components.size() > 1){ 
             System.out.println("Graph is not connected");
@@ -83,17 +95,15 @@ public class SensorNetworkRunner {
         if(algoChoice == 1 || algoChoice == 3) {System.out.println("\nExecuting Breadth First Search:");}
         else if(algoChoice == 2){System.out.println("\nExecuting Depth First Search:");}
 
-        for(List<Integer> component : components){
+        for(List<Node> component : components){
             System.out.println("Connected Component:" + component);
         }
 
         if(algoChoice == 3){ 
             System.out.println("\nExecuting Depth First Search:");
-            for(List<Integer> component : components2){
+            for(List<Node> component : components2){
                 System.out.println("Connected component: " + component);
             }
         }
-
-
     }
 }

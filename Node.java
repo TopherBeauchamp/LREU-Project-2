@@ -4,13 +4,18 @@ public class Node {
     private int x; 
     private int y;
     private int id;
+    private int numPackets; 
+    private int minPackets; 
+    private int maxPackets; 
+    private boolean isRendezvous = false; 
     private static Random rand = new Random();  // for generating random positions
     
     // Constructor that creates a node with random position
-    public Node(int id, int maxWidth, int maxLength) {
+    public Node(int id, int maxWidth, int maxLength, int minPackets, int maxPackets) {
         this.id = id;
         this.x = rand.nextInt(maxWidth + 1);  // random number from 0 to maxWidth-1
         this.y = rand.nextInt(maxLength + 1); // random number from 0 to maxLength-1
+        this.numPackets = rand.nextInt(maxPackets - minPackets +1) + minPackets; 
     }
     
     public double getDistance(Node other) {
@@ -28,5 +33,27 @@ public class Node {
     }
     public int getId(){ 
         return id; 
+    }
+
+    public int getPackets(){ 
+        return numPackets;
+    }
+
+    public void designateNode(){
+        this.isRendezvous = true; 
+    }
+
+    public boolean checkIfRendezvous(){
+        return isRendezvous;
+    }
+
+    @Override
+    public String toString() {
+        if(isRendezvous){
+            return String.format("Node #%d (%d,%d) %d packets Designated Rendezvous", this.getId(), this.getX(), this.getY(), this.getPackets());
+        }
+        else{ 
+            return String.format("Node #%d (%d,%d) %d packets", this.getId(), this.getX(), this.getY(), this.getPackets());
+        }
     }
 }

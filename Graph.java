@@ -5,8 +5,8 @@ public interface Graph {
     
 
     //Breadth first search algorithm 
-    List<List<Integer>> bfs();
+    List<List<Node>> bfs();
 
     //Depth first search algorithm 
-    List<List<Integer>> dfs();
+    List<List<Node>> dfs();
 }

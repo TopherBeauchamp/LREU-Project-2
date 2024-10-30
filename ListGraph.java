@@ -8,8 +8,9 @@ import java.util.LinkedList;
 
 public class ListGraph implements Graph{
 
-    int numVertices;
-    List<List<Integer>> adjList;
+    private int numVertices;
+    private List<List<Integer>> adjList;
+    private int totalEnergy; 
 
     ListGraph(int numVertices) {
         this.numVertices = numVertices;
@@ -24,13 +25,13 @@ public class ListGraph implements Graph{
     }
 
 
-    public List<List<Integer>> bfs(){ 
-        List<List<Integer>> components = new ArrayList<>(); 
+    public List<List<Node>> bfs(){ 
+        List<List<Node>> components = new ArrayList<>(); 
         boolean[] visited = new boolean[numVertices]; 
 
         for(int startNode = 0; startNode < numVertices; startNode++){ 
             if(!visited[startNode]){ 
-                List<Integer> component = new ArrayList<>(); 
+                List<Node> component = new ArrayList<>(); 
                 Queue<Integer> queue = new LinkedList<>(); 
 
                 queue.offer(startNode); 
@@ -38,7 +39,7 @@ public class ListGraph implements Graph{
 
                 while(!queue.isEmpty()){
                     int currentNode = queue.poll();
-                    component.add(currentNode +1);
+                    component.add(NodeRegistry.getNodeById(currentNode +1));
 
                     for(Integer neighbor : adjList.get(currentNode)){ 
                         if(!visited[neighbor]){
@@ -54,13 +55,13 @@ public class ListGraph implements Graph{
         return components;
     }
 
-    public List<List<Integer>> dfs() { 
-        List<List<Integer>> components = new ArrayList<>(); 
+    public List<List<Node>> dfs() { 
+        List<List<Node>> components = new ArrayList<>(); 
         boolean[] visited = new boolean[numVertices];
 
         for(int startNode = 0; startNode < numVertices; startNode++){
             if(!visited[startNode]){
-                List<Integer> component = new ArrayList<>(); 
+                List<Node> component = new ArrayList<>(); 
                 Stack<Integer> stack = new Stack<>();
 
                 stack.push(startNode); 
@@ -68,7 +69,7 @@ public class ListGraph implements Graph{
 
                 while(!stack.isEmpty()){
                     int currentNode = stack.pop();
-                    component.add(currentNode+1);
+                    component.add(NodeRegistry.getNodeById(currentNode +1));
 
                     for(Integer neighbor : adjList.get(currentNode)){
                         if(!visited[neighbor]){
@@ -83,4 +84,7 @@ public class ListGraph implements Graph{
         return components;
     }
 
+    public double dijkstraShortestPath(List<Node> component){ 
+        
+    }
 } 
