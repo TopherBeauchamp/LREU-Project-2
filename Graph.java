@@ -1,7 +1,7 @@
 import java.util.List;
 
 public interface Graph {
-    void addEdge(int sourceNode, int connectedNode);
+    void addEdge(Node sourceNode, Node connectedNode);
     
 
     //Breadth first search algorithm 

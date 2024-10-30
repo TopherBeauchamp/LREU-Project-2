@@ -36,6 +36,9 @@ public class SensorNetworkRunner {
         else if(graphChoice == 2){ 
             graph = new ListGraph(numNodes);
         }
+        else if(graphChoice == 3){
+            graph = new MatrixGraph(numNodes);
+        }
         else{ 
             System.out.println("Pick a valid number next time!!");
             System.exit(0);
@@ -53,13 +56,14 @@ public class SensorNetworkRunner {
         for (int i = 0; i < numNodes; i++) {
             for (int j = i + 1; j < numNodes; j++) {
                 if (nodeList.get(i).getDistance(nodeList.get(j)) <= transmissionRange) {
-                    graph.addEdge(nodeList.get(i).getId(), j+1);
+                    graph.addEdge(nodeList.get(i), nodeList.get(j));
                 }
             }
         }
 
         List<List<Node>> components = null;
         List<List<Node>> components2 = null; 
+
         if(algoChoice == 1){
            components = graph.bfs(); 
         }
@@ -76,12 +80,12 @@ public class SensorNetworkRunner {
         }
 
        for(List<Node> component : components){
-        DesignateRendezvous.designate(component);
+         Node.designate(component);
        }
 
        if(algoChoice == 3){
         for(List<Node> component : components2){
-            DesignateRendezvous.designate(component);
+            Node.designate(component);
            }
        }
 

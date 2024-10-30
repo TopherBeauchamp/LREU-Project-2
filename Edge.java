@@ -1,8 +1,10 @@
 public class Edge {
+    private int source; 
     private int destination; 
     public double energy;
 
-    Edge(int destination, int numPackets, double distance){ 
+    Edge(int source, int destination, int numPackets, double distance){ 
+        this.source = source; 
         this.destination = destination; 
         this.energy = calculateEnergy(numPackets, distance);
     }
@@ -23,5 +25,9 @@ public class Edge {
 
     public double getEnergy(){ 
         return energy; 
+    }
+
+    public int getSource(){ 
+        return source; 
     }
 }

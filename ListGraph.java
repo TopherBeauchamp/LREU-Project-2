@@ -20,8 +20,8 @@ public class ListGraph implements Graph{
     }
 
     public void addEdge(Node sourceNode, Node connectedNode) {
-        adjList.get(sourceNode.getId()-1).add(new Edge(sourceNode.getId(), connectedNode.getId(), connectedNode.getPackets(), connectedNode.getDistance(sourceNode)));
-        adjList.get(connectedNode.getId()-1).add(new Edge(connectedNode.getId(), sourceNode.getId(), sourceNode.getPackets(), sourceNode.getDistance(connectedNode)));
+        adjList.get(sourceNode.getId()-1).add(new Edge(sourceNode.getId(), connectedNode.getId(), sourceNode.getPackets(), connectedNode.getDistance(sourceNode)));
+        adjList.get(connectedNode.getId()-1).add(new Edge(connectedNode.getId(), sourceNode.getId(), connectedNode.getPackets(), sourceNode.getDistance(connectedNode)));
     }
 
 
