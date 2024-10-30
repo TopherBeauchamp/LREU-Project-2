@@ -9,7 +9,7 @@ import java.util.LinkedList;
 public class ListGraph implements Graph{
 
     private int numVertices;
-    private List<List<Integer>> adjList;
+    private List<List<Edge>> adjList;
     private int totalEnergy; 
 
     ListGraph(int numVertices) {
@@ -19,9 +19,9 @@ public class ListGraph implements Graph{
             adjList.add(new ArrayList<>());
     }
 
-    public void addEdge(int sourceNode, int connectedNode) {
-        adjList.get(sourceNode-1).add(connectedNode-1);
-        adjList.get(connectedNode-1).add(sourceNode-1);
+    public void addEdge(Node sourceNode, Node connectedNode) {
+        adjList.get(sourceNode.getId()-1).add(new Edge(sourceNode.getId(), connectedNode.getId(), connectedNode.getPackets(), connectedNode.getDistance(sourceNode)));
+        adjList.get(connectedNode.getId()-1).add(new Edge(connectedNode.getId(), sourceNode.getId(), sourceNode.getPackets(), sourceNode.getDistance(connectedNode)));
     }
 
 
@@ -41,15 +41,21 @@ public class ListGraph implements Graph{
                     int currentNode = queue.poll();
                     component.add(NodeRegistry.getNodeById(currentNode +1));
 
-                    for(Integer neighbor : adjList.get(currentNode)){ 
-                        if(!visited[neighbor]){
-                            queue.offer(neighbor);
-                            visited[neighbor] = true; 
+                    for(Edge neighbor : adjList.get(currentNode)){ 
+                        if(!visited[neighbor.getDestination()-1]){
+                            queue.offer(neighbor.getDestination()-1);
+                            visited[neighbor.getDestination()-1] = true; 
                         }
 
                     }
                 }
                 components.add(component);
+            }
+        }
+        System.out.println("Printing Edges");
+        for(List<Edge> edgeList: adjList){
+            for(Edge edge : edgeList){
+                System.out.printf("Edge Source: %d Edge Destination: %d Edge Weight (Energy): %f \n", edge.getSource(), edge.getDestination(), edge.getEnergy());
             }
         }
         return components;
@@ -71,11 +77,12 @@ public class ListGraph implements Graph{
                     int currentNode = stack.pop();
                     component.add(NodeRegistry.getNodeById(currentNode +1));
 
-                    for(Integer neighbor : adjList.get(currentNode)){
-                        if(!visited[neighbor]){
-                            stack.push(neighbor);
-                            visited[neighbor] = true; 
+                    for(Edge neighbor : adjList.get(currentNode)){ 
+                        if(!visited[neighbor.getDestination()-1]){
+                            stack.push(neighbor.getDestination()-1);
+                            visited[neighbor.getDestination()-1] = true; 
                         }
+
                     }
                 }
                 components.add(component);
@@ -84,7 +91,5 @@ public class ListGraph implements Graph{
         return components;
     }
 
-    public double dijkstraShortestPath(List<Node> component){ 
-        
-    }
+
 } 
